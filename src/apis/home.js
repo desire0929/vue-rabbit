@@ -8,3 +8,6 @@ export const getNewGoodsApi = () => httpInstance.get('/home/new')
 
 //获取人气推荐
 export const getHotGoodsApi = () => httpInstance.get('/home/hot')
+
+//获取所有商品模块
+export const getGoodsApi = () => httpInstance.get('/home/goods')
