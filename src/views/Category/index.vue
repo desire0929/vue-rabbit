@@ -4,17 +4,24 @@ import { getBannerApi } from '@/apis/home'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 // 分类数据
 const categoryData = ref({})
 const route = useRoute()
 
-const getCategoryData = async () => {
-  const res = await getCategoryApi(route.params.id)
+const getCategoryData = async (id = route.params.id) => {
+  const res = await getCategoryApi(id)
   categoryData.value = res.result
 }
 
 onMounted(() => getCategoryData())
+
+//目标：当路由参数发生变化时，重新获取分类数据
+onBeforeRouteUpdate((to) => {
+    console.log('路由参数发生变化了')
+    getCategoryData(to.params.id)
+})
 
 // 轮播图数据
 const bannerList = ref([])
