@@ -1,38 +1,13 @@
 <script setup>
-import { getCategoryApi } from '@/apis/category'
-import { getBannerApi } from '@/apis/home'
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import GoodsItem from '@/views/Home/components/GoodsItem.vue'
-import { onBeforeRouteUpdate } from 'vue-router'
+import { useCategory } from './composables/useCategory'
+import { useBanner } from './composables/useBanner'
 
-// 分类数据
-const categoryData = ref({})
-const route = useRoute()
+// 获取分类数据
+const { categoryData } = useCategory()
 
-const getCategoryData = async (id = route.params.id) => {
-  const res = await getCategoryApi(id)
-  categoryData.value = res.result
-}
-
-onMounted(() => getCategoryData())
-
-//目标：当路由参数发生变化时，重新获取分类数据
-onBeforeRouteUpdate((to) => {
-    console.log('路由参数发生变化了')
-    getCategoryData(to.params.id)
-})
-
-// 轮播图数据
-const bannerList = ref([])
-
-const getBanner = async () => {
-    const res = await getBannerApi(2)
-    console.log(res)
-    bannerList.value = res.result
-}
-
-onMounted(() => getBanner())
+// 获取banner
+const { bannerList } = useBanner()
 
 </script>
 
