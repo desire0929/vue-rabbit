@@ -25,24 +25,32 @@ export const useCartStore = defineStore('cart', () => {
         cartList.value.splice(index,1)
     }
 
-    //定义action - singleCheck
+    //定义action - singleCheck(单选功能)
     const singleCheck = (skuId, selected) => {
         //根据skuId找到对应的商品，并更新其selected属性
         const item = cartList.value.find((item) => item.skuId === skuId)
         item.selected = selected
     }
 
+    //定义action - allCheck(全选功能)
+    const allCheck = (selected) => {
+        cartList.value.forEach(item => item.selected = selected)
+    }
+
     //计算属性
     const totalCount = computed(() => cartList.value.reduce((total, item) => total + item.count, 0))
     const totalPrice = computed(() => cartList.value.reduce((total, item) => total + item.count * item.price, 0))
+    const isAllSelected = computed(() => cartList.value.every(item => item.selected))
 
     return {
         cartList,
         addCart,
         delCart,
         singleCheck,
+        allCheck,
         totalCount,
-        totalPrice
+        totalPrice,
+        isAllSelected
     }
 }, {
     persist: true
