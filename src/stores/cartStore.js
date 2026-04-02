@@ -25,6 +25,13 @@ export const useCartStore = defineStore('cart', () => {
         cartList.value.splice(index,1)
     }
 
+    //定义action - singleCheck
+    const singleCheck = (skuId, selected) => {
+        //根据skuId找到对应的商品，并更新其selected属性
+        const item = cartList.value.find((item) => item.skuId === skuId)
+        item.selected = selected
+    }
+
     //计算属性
     const totalCount = computed(() => cartList.value.reduce((total, item) => total + item.count, 0))
     const totalPrice = computed(() => cartList.value.reduce((total, item) => total + item.count * item.price, 0))
@@ -33,6 +40,7 @@ export const useCartStore = defineStore('cart', () => {
         cartList,
         addCart,
         delCart,
+        singleCheck,
         totalCount,
         totalPrice
     }
