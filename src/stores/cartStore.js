@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
-    //1.定义state - cartList
+    //定义state - cartList
     const cartList = ref([])
 
-    //2.定义action - addCart
+    //定义action - addCart
     const addCart = (goods) => {
         //1.判断购物车中是否已经存在该商品
         const item = cartList.value.find((item) => item.skuId === goods.skuId)
@@ -19,9 +19,16 @@ export const useCartStore = defineStore('cart', () => {
 
     }
 
+    //定义action - delCart
+    const delCart = (skuId) => {
+        const index = cartList.value.findIndex((item) => item.skuId ===skuId)
+        cartList.value.splice(index,1)
+    }
+
     return {
         cartList,
-        addCart
+        addCart,
+        delCart
     }
 }, {
     persist: true
