@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useUserStore } from './user'
-import { insertCartApi, getCartListApi } from '@/apis/cart'
+import { useUserStore } from './userStore'
+import { insertCartApi, getCartListApi, delCartApi } from '@/apis/cart'
 
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
@@ -9,13 +9,18 @@ export const useCartStore = defineStore('cart', () => {
     //定义state - cartList
     const cartList = ref([])
 
+    //获取最新购物车列表action
+    const updateNewList = async () => {
+        const res = await getCartListApi()
+            cartList.value = res.result
+    }
+
     //定义action - addCart
     const addCart = async (goods) => {
         const { skuId, count } = goods
         if(isLogin.value){
             await insertCartApi({skuId,count})
-            const res = await getCartListApi()
-            cartList.value = res.result
+            updateNewList()
         }else{
             //1.判断购物车中是否已经存在该商品
             const item = cartList.value.find((item) => item.skuId === goods.skuId)
@@ -31,9 +36,14 @@ export const useCartStore = defineStore('cart', () => {
     }
 
     //定义action - delCart
-    const delCart = (skuId) => {
-        const index = cartList.value.findIndex((item) => item.skuId ===skuId)
-        cartList.value.splice(index,1)
+    const delCart = async (skuId) => {
+        if(isLogin.value){
+            await delCartApi([skuId])
+            updateNewList()
+        }else{
+            const index = cartList.value.findIndex((item) => item.skuId ===skuId)
+            cartList.value.splice(index,1)
+        }
     }
 
     //定义action - singleCheck(单选功能)
