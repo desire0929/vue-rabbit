@@ -6,7 +6,7 @@ import { insertCartApi, getCartListApi, delCartApi } from '@/apis/cart'
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
     const isLogin = computed(() => userStore.userInfo.token)
-    
+
     //定义state - cartList
     const cartList = ref([])
 
@@ -73,6 +73,7 @@ export const useCartStore = defineStore('cart', () => {
 
     return {
         cartList,
+        updateNewList,
         addCart,
         delCart,
         clearCart,

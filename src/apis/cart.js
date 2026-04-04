@@ -8,3 +8,6 @@ export const getCartListApi = () => httpInstance.get('/member/cart')
 
 //删除购物车
 export const delCartApi = (ids) => httpInstance.delete('/member/cart', {data: {ids}})
+
+//合并购物车
+export const mergeCartApi = (data) => httpInstance.post('/member/cart/merge', data)
