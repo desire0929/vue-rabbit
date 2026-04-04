@@ -6,6 +6,7 @@ import { insertCartApi, getCartListApi, delCartApi } from '@/apis/cart'
 export const useCartStore = defineStore('cart', () => {
     const userStore = useUserStore()
     const isLogin = computed(() => userStore.userInfo.token)
+    
     //定义state - cartList
     const cartList = ref([])
 
@@ -46,6 +47,11 @@ export const useCartStore = defineStore('cart', () => {
         }
     }
 
+    //定义action - clearCart
+    const clearCart = () => {
+        cartList.value = []
+    }
+
     //定义action - singleCheck(单选功能)
     const singleCheck = (skuId, selected) => {
         //根据skuId找到对应的商品，并更新其selected属性
@@ -69,6 +75,7 @@ export const useCartStore = defineStore('cart', () => {
         cartList,
         addCart,
         delCart,
+        clearCart,
         singleCheck,
         allCheck,
         totalCount,
